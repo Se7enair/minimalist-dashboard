@@ -1,0 +1,80 @@
+---
+### Card Generic Swap ###
+custom_card_se7enair_trash:
+  template:
+    - "icon_more_info_new"
+    - "ulm_translation_engine"
+  variables:
+    ulm_card_generic_swap_icon: "[[[ return entity.attributes.icon ]]]"
+    ulm_card_generic_swap_name: "[[[ return entity.attributes.friendly_name ]]]"
+    ulm_outlet_power_enable_popup: false
+  custom_fields:
+    item1:
+      card:
+        type: "custom:button-card"
+        custom_fields:
+          item1:
+            card:
+              type: "custom:button-card"
+              entity: "[[[ return entity.entity_id ]]]"
+              state:
+                - operator: "template"
+                  value: |
+                    [[[ return states[entity.entity_id].attributes.message == 'Biotonne in Memmingen'; ]]]
+                  icon: mdi:recycle
+                  styles:
+                    icon:
+                      - color: "rgba(186, 146, 0, 1)"
+                    img_cell:
+                      - background-color: "rgba(186, 146, 0, 0.2)"
+                - operator: "template"
+                  value: |
+                    [[[ return states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen'; ]]]
+                  icon: mdi:delete
+                  styles:
+                    icon:
+                      - color: "rgba(160, 160, 160, 1)"
+                    img_cell:
+                      - background-color: "rgba(160, 160, 160, 0.2)"
+                - operator: "template"
+                  value: |
+                    [[[ return states[entity.entity_id].attributes.message == 'Altpapier'; ]]]
+                  icon: mdi:paper-cut-vertical
+                  styles:
+                    icon:
+                      - color: "rgba(0, 100, 200, 1)"
+                    img_cell:
+                      - background-color: "rgba(0, 100, 200, 0.2)"
+              # icon: "[[[ return variables.ulm_card_generic_swap_icon; ]]]"
+              styles:
+                icon:
+                  - color: "rgba(var(--color-theme),0.3)"
+          item2:
+            card:
+              type: "custom:button-card"
+              entity: "[[[ return entity.entity_id ]]]"
+              styles:
+                name:
+                  - color: >
+                      [[[
+                        return ((states[entity.entity_id].attributes.message == 'Biotonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Altpapier')) && ((states['sensor.abfall_morgen'].state == 'Morgen') || (states['sensor.abfall_morgen'].state == 'Heute')) ?
+                          'rgba(33, 33, 33, 1.0)' :
+                          'rgba(33, 33, 33, 0.4)';
+                      ]]]
+              label: >
+                [[[ 
+                  { return states['sensor.abfall_morgen'].state; }
+                ]]]
+              name: >
+                [[[
+                  if (states[entity.entity_id].attributes.message === 'Biotonne in Memmingen' )
+                    return 'Biotonne';
+                  if (states[entity.entity_id].attributes.message === 'Restmülltonne in Memmingen')
+                    return 'Restmüll';
+                  else
+                    return 'Altpapier';
+                ]]]
+              state_display: >
+                [[[ 
+                  { return states['sensor.abfall_morgen'].state; }
+                ]]]

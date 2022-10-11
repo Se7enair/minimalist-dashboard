@@ -1,0 +1,89 @@
+---
+button_card_templates: !include_dir_merge_named "../../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+
+kiosk_mode:
+  hide_header: true
+  hide_sidebar: true
+  mobile_settings:
+    hide_sidebar: false
+    ignore_entity_settings: true
+    custom_width: 768
+
+title: "Test"
+theme: "minimalist-desktop"
+# views: !include_dir_merge_list "views/"
+views:
+  - title: "Climate"
+    path: 0
+    icon: "mdi:test-tube"
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 3em 1fr 0.5em
+      grid-template-rows: 3em 8em 15em 3em
+      grid-gap: 0.7em
+      grid-template-areas: |
+        ". . ."
+        "back ein ."
+        ". aus ."
+        ". . ."
+
+
+    cards:
+      - type: custom:button-card
+        view_layout:
+          grid-area: back
+        template: chip_back
+        variables:
+          ulm_chip_back_path: /ui-lovelace-minimalist/
+    # On
+      - type: vertical-stack
+        view_layout:
+          grid-area: ein
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Eingeschaltete Lichter
+          - type: custom:auto-entities
+            card:
+              type: grid
+              square: false
+              columns: 6
+            card_param: cards
+            filter:
+              include:
+                - domain: light
+                  state: "on"
+                  options:
+                    type: 'custom:button-card'
+                    template: card_light
+                    variables:
+                      ulm_card_light_enable_slider: false
+                      ulm_card_light_enable_color: false
+              exclude:
+                - entity_id: "*dashboard*"
+    # Off
+      - type: vertical-stack
+        view_layout:
+          grid-area: aus
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Alle Lichter
+          - type: custom:auto-entities
+            card:
+              type: grid
+              square: false
+              columns: 6
+            card_param: cards
+            filter:
+              include:
+                - domain: light
+                  state: "off"
+                  options:
+                    type: 'custom:button-card'
+                    template: card_light
+                    variables:
+                      ulm_card_light_enable_slider: false
+                      ulm_card_light_enable_color: false
+              exclude:
+                - entity_id: "*dashboard*"

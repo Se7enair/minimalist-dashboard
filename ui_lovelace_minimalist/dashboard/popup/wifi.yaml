@@ -1,0 +1,14 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Gäste Wifi
+    # size: fullscreen
+    # style:
+    #   .: |
+    #     :host .content {
+    #       width: 1150px;
+    #     }
+    content:
+      type: picture
+      image: /local/wifi.png

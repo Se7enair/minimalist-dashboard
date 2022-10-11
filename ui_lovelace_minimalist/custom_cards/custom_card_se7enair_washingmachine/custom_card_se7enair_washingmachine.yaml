@@ -1,0 +1,77 @@
+---
+### Card Generic Swap ###
+custom_card_se7enair_washingmachine:
+  template:
+    - "icon_more_info_new"
+    - "ulm_translation_engine"
+  variables:
+    ulm_card_generic_swap_icon: "[[[ return entity.attributes.icon ]]]"
+    ulm_card_generic_swap_name: "[[[ return entity.attributes.friendly_name ]]]"
+    ulm_outlet_power_enable_popup: false
+  custom_fields:
+    item1:
+      card:
+        type: "custom:button-card"
+        custom_fields:
+          item1:
+            card:
+              type: "custom:button-card"
+              state:
+                - value: "Läuft"
+                  styles:
+                    card: [background-color: "rgba(255, 255, 255, 0.8)"]
+                - value: "Finishing"
+                  styles:
+                    card: [background-color: "rgba(229, 154, 24, 0.8)"]
+                - value: "Fertig"
+                  styles:
+                    card: [background-color: "rgba(0, 136, 0, 0.7)"]
+              tap_action:
+                action: call-service
+                service: input_select.select_option
+                service_data:
+                  entity_id: input_select.waschmaschinenstatus
+                  option: Idle
+              entity: "[[[ return entity.entity_id ]]]"
+              icon: "[[[ return variables.ulm_card_generic_swap_icon; ]]]"
+              styles:
+                icon:
+                  - color: "rgba(var(--color-theme),0.3)"
+              variables: >
+                [[[
+                  let vars = variables;
+
+                  if(variables.ulm_outlet_power_enable_popup) {
+                    vars.ulm_custom_popup = {
+                      'template': 'popup_power_outlet_stats',
+                      'popup_variables': {
+                        'ulm_popup_power_outlet_sensor1': variables.ulm_popup_power_outlet_sensor1,
+                        'ulm_popup_power_outlet_sensor2': variables.ulm_popup_power_outlet_sensor2,
+                        'ulm_popup_power_outlet_graph_sensor': variables.ulm_popup_power_outlet_graph_sensor
+                      }
+                    };
+                  }
+                  return vars;
+                ]]]
+          item2:
+            card:
+              type: "custom:button-card"
+              entity: "[[[ return entity.entity_id ]]]"
+              label: "[[[ return variables.ulm_translation_state_unit ]]]"
+              name: "[[[ return variables.ulm_card_generic_swap_name ]]]"
+              variables: >
+                [[[
+                  let vars = variables;
+
+                  if(variables.ulm_outlet_power_enable_popup) {
+                    vars.ulm_custom_popup = {
+                      'template': 'popup_power_outlet_stats',
+                      'popup_variables': {
+                        'ulm_popup_power_outlet_sensor1': variables.ulm_popup_power_outlet_sensor1,
+                        'ulm_popup_power_outlet_sensor2': variables.ulm_popup_power_outlet_sensor2,
+                        'ulm_popup_power_outlet_graph_sensor': variables.ulm_popup_power_outlet_graph_sensor
+                      }
+                    };
+                  }
+                  return vars;
+                ]]]

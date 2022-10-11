@@ -1,0 +1,16 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Proxmox
+    size: wide
+    style:
+      .: |
+        :host .content {
+          width: 1150px;
+        }
+    content:
+      type: iframe
+      url: >-
+        http://192.168.178.107:3000/d/IfgdXjtnk/proxmox-flux?orgId=1&theme=light&kiosk=tv
+      aspect_ratio: 100%

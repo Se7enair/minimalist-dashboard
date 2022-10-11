@@ -1,0 +1,106 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Smarthome
+    hide_header: false
+    style:
+      .: |
+        :host .content {
+          width: calc(385px + 385px + 385px);
+          max-width: 90vw;
+          height: 569px;
+        }
+    card:
+      type: custom:layout-card
+      layout_type: custom:grid-layout
+      layout:
+        grid-template-columns: repeat(3, 1fr)
+        grid-template-rows: 1fr
+        grid-template-areas: |
+          "house heating batteries"
+        mediaquery:
+          #phone
+          "(max-width: 800px)":
+            grid-template-columns: 1fr
+            grid-template-rows: repeat(3, 1fr)
+            grid-template-areas: |
+              "house"
+              "heating"
+              "batteries"
+      cards:
+
+        ###################
+        #      HAUS       #
+        ###################
+        - type: entities
+          view_layout:
+            grid_area: house
+          title: Haus
+          style: &border |
+            ha-card {
+              border-radius: 0;
+              animation: ha-card 1s forwards;
+            }
+
+            @keyframes ha-card {
+              0%, 100% {
+                  border-right: 1.5px solid rgba(0, 0, 0, 0.2);
+              }
+            }
+
+            /* phone */
+            @media screen and (max-width: 800px) {
+              ha-card {
+                  border-bottom: 1.5px solid rgba(0, 0, 0, 0.2);
+                  padding-right: 0;
+                  animation: none;
+              }
+            }
+          entities:
+            - type: custom:hui-element
+              card_type: glance
+              entities:
+                - entity: person.christoph
+                - entity: person.franziska
+            - entity: group.haus
+            - entity: input_boolean.alarmsystem
+            - entity: input_boolean.absent_long
+            - entity: binary_sensor.flur_rauchmelder_eg_alarm
+              name: Schlafzimmer Rauchmelder
+            - entity: binary_sensor.flur_rauchmelder_dg_alarm
+              name: DG/Flur Rauchmelder
+            - entity: binary_sensor.schlafzimmer_rauchmelder_alarm
+              name: EG/Flur Rauchmelder
+
+        ##################
+        #     Heizung    #
+        ##################
+        - type: entities
+          view_layout:
+            grid-area: heating
+          title: Heizung
+          style: *border
+          entities:
+            - entity: input_boolean.heizung
+            - entity: input_boolean.unplanmaessig_zuhause
+            - entity: group.ferien_und_feiertage
+              name: Ferien, Feiertage, Homeoffice
+            - entity: input_boolean.homeoffice
+            - entity: input_boolean.partymodus
+            - entity: sensor.openweathermap_temperature
+              name: Außentemperatur
+            - entity: schedy_room.schedy_heating_schlafzimmer
+              icon: mdi:thermometer-lines
+              name: Schlafzimmer
+            - entity: schedy_room.schedy_heating_wohnesszimmer
+              icon: mdi:thermometer-lines
+              name: Wohn und Esszimmer
+            - entity: schedy_room.schedy_heating_buero
+              icon: mdi:thermometer-lines
+              name: Büro
+            - entity: schedy_room.schedy_heating_bad
+              icon: mdi:thermometer-lines
+              name: Bad
+
+            

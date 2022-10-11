@@ -1,0 +1,29 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Hof
+    content:
+      style:
+        .: |
+          :host .content {
+            width: 1150px;
+          }
+      type: custom:frigate-card
+      event_viewer:
+        controls:
+          next_previous:
+            style: thumbnails
+      menu:
+        mode: hidden-top
+        buttons:
+          frigate: true
+      view:
+        default: live
+      cameras:
+        - camera_entity: camera.hof
+          label: person
+          zone: einfahrt
+          live_provider: frigate-jsmpeg
+      live:
+        preload: true

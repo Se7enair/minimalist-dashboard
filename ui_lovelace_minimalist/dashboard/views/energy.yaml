@@ -1,0 +1,45 @@
+---
+button_card_templates: !include_dir_merge_named "../../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+
+kiosk_mode:
+  hide_header: true
+  hide_sidebar: true
+  mobile_settings:
+    hide_sidebar: false
+    ignore_entity_settings: true
+    custom_width: 768
+
+title: "Energy"
+theme: "minimalist-desktop"
+# views: !include_dir_merge_list "views/"
+views:
+  - title: "Energy"
+    path: 0
+    icon: "mdi:fire"
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 0.5em 5em repeat(3, 3fr) 0.5em
+      grid-template-rows: 6em 18em 29em 1em
+      grid-gap: 0.7em
+      grid-template-areas: |
+        ". back . chips clock ."
+        ". navigation graph graph graph ."
+        ". navigation table table selection ."
+        ". . footer footer footer ."
+
+    cards:
+      - type: custom:button-card
+        view_layout:
+          grid-area: back
+        template: chip_back
+        variables:
+          ulm_chip_back_path: /ui-lovelace-minimalist/
+      - type: energy-sources-table
+        view_layout:
+          grid-area: table
+      - type: energy-gas-graph
+        view_layout:
+          grid-area: graph
+      - type: energy-date-selection
+        view_layout:
+          grid-area: selection

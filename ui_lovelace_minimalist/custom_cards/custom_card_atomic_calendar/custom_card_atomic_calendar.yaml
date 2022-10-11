@@ -1,0 +1,38 @@
+custom_card_atomic_calendar:
+  # template:
+  #   - "ulm_language_variables"
+  custom_fields:
+    calendar:
+      card:
+        type: custom:atomic-calendar-revive
+        enableModeChange: true
+        firstDayOfWeek: 1
+        maxDaysToShow: 100
+        entities:
+          - entity: !secret calendar_entity_primary
+          - entity: !secret calendar_entity_family
+        showCurrentEventLine: false
+        showMonth: false
+        showWeekDay: true
+        showNoEventsForToday: true
+        showEventIcon: false
+        calShowDescription: true
+        showLastCalendarWeek: false
+        dimFinishedEvents: true
+        showRelativeTime: false
+        eventCalNameColor: rgba(86, 100, 86, .35)
+        calWeekDayColor: rgba(86, 100, 86, .35)
+        showLocation: false
+        untilText: bis
+        noEventsForNextDaysText: keine Termine in den nächsten Tagen
+        showProgressBar: false
+        showDescription: true
+        noEventText: keine Termine heute
+        showFullDayProgress: true
+        disableCalEventLink: false
+        disableCalLocationLink: false
+        disableCalLink: false
+        showDate: false
+        sortByStartTime: true
+        cardHeight: 100%
+        refreshInterval: 60

@@ -1,0 +1,460 @@
+---
+button_card_templates: !include_dir_merge_named "../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+
+kiosk_mode:
+  hide_header: true
+  hide_sidebar: true
+  mobile_settings:
+    hide_sidebar: false
+    ignore_entity_settings: true
+    custom_width: 768
+
+title: "UI Lovelace Minimalist"
+theme: "minimalist-desktop"
+# views: !include_dir_merge_list "views/"
+views:
+# Dashboard
+  - title: "Dashboard"
+    path: 0
+    icon: "mdi:flower"
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 0.5em 5em repeat(3, 3fr) 0.5em
+      grid-template-rows: 6em 18em 29em 1em
+      grid-gap: 0.7em
+      grid-template-areas: |
+        ". . . chips clock ."
+        ". navigation welcome weather camera ."
+        ". navigation calendar rooms house ."
+        ". . footer footer footer ."
+
+    cards:
+
+      #############
+      #   Chips   #
+      #############
+
+      - type: vertical-stack
+        view_layout:
+          grid-area: chips
+        cards:
+          - type: "custom:button-card"
+            color_type: blank-card
+          - type: horizontal-stack
+            cards:  
+              - type: "custom:button-card"
+                color_type: blank-card
+              - type: 'custom:button-card'
+                template: custom_card_person_chip
+                variables:
+                  ulm_custom_card_person_chip_entity: person.christoph
+              - type: 'custom:button-card'
+                template: custom_card_person_chip
+                variables:
+                  ulm_custom_card_person_chip_entity: person.franziska
+              - type: "custom:button-card"
+                color_type: blank-card
+          - type: "custom:button-card"
+            color_type: blank-card
+          
+      #############
+      #   Clock   #
+      #############
+
+      - type: "custom:button-card"
+        view_layout:
+          grid-area: clock
+        styles:
+          label:
+            - justify-self: "right"
+          name:
+            - justify-self: "right"
+        template: custom_card_nik_clock
+        variables:
+          ulm_custom_card_nik_clock_switch_enable: false
+
+      ##################
+      #   Navigation   #
+      ##################
+
+      - type: grid
+        columns: 1
+        square: true
+        view_layout:
+          grid-area: navigation
+        cards:
+          # House
+          - type: custom:button-card
+            name: 
+            icon: mdi:home
+            aspect_ratio: 1/1
+            tap_action:
+              action: navigate
+              navigation_path: /home
+          # Climate
+          - type: custom:button-card
+            icon: mdi:home-thermometer
+            aspect_ratio: 1/1
+            tap_action: 
+              action: navigate
+              navigation_path: /climate-yaml
+          # Energy
+          - type: custom:button-card
+            name: 
+            icon: mdi:fire
+            aspect_ratio: 1/1
+            tap_action:
+              action: navigate
+              navigation_path: /energy-yaml
+          # Metrics
+          - type: custom:button-card
+            icon: mdi:chart-multiline
+            aspect_ratio: 1/1
+            tap_action: !include popup/proxmox.yaml
+          # Test
+          - type: custom:button-card
+            icon: mdi:test-tube
+            aspect_ratio: 1/1
+            tap_action: 
+              action: navigate
+              navigation_path: /test-yaml
+
+      ###############
+      #   Welcome   #
+      ###############
+
+      - type: "custom:button-card"
+        view_layout:
+          grid-area: welcome
+        template: "custom_card_se7enair_welcome"
+        styles:
+          card:
+            - height: 100%
+        triggers_update: input_boolean.alarmanlage
+        variables:
+          ulm_card_welcome_scenes_collapse: input_boolean.alarmanlage
+          ulm_weather: weather.openweathermap
+          entity_1:
+            entity_id: script.popup_house
+            icon: "mdi:home" #OPTIONAL
+            name: "Haus" #OPTIONAL
+            color: "blue"
+          entity_2:
+            entity_id: script.popup_battery
+            icon: "mdi:battery-charging" #OPTIONAL
+            name: "Batterien" #OPTIONAL
+            color: "green"
+          entity_3:
+            entity_id: script.popup_light
+            icon: "mdi:lightbulb" #OPTIONAL
+            name: "Licht" #OPTIONAL
+            color: "yellow"
+          entity_4:
+            entity_id: script.popup_motion
+            icon: "mdi:motion-sensor" #OPTIONAL
+            name: "Bewegung" #OPTIONAL
+            color: "purple"
+          entity_5:
+            entity_id: script.popup_wifi
+            icon: "mdi:wifi" #OPTIONAL
+            name: "Wifi" #OPTIONAL
+            color: "red"
+
+      ###############
+      #   Weather   #
+      ###############
+
+      - type: weather-forecast
+        view_layout:
+          grid-area: weather
+        show_current: true
+        show_forecast: true
+        entity: weather.openweathermap
+
+      ################
+      #   Calendar   #
+      ################
+
+      - type: custom:atomic-calendar-revive
+        view_layout:
+          grid-area: calendar
+        enableModeChange: true
+        firstDayOfWeek: 1
+        maxDaysToShow: 30
+        entities:
+          - entity: !secret calendar_entity_primary
+          - entity: !secret calendar_entity_family
+        showCurrentEventLine: false
+        showMonth: false
+        showWeekDay: true
+        showNoEventsForToday: true
+        showEventIcon: false
+        calShowDescription: true
+        showLastCalendarWeek: false
+        dimFinishedEvents: true
+        showRelativeTime: false
+        eventCalNameColor: rgba(86, 100, 86, .35)
+        calWeekDayColor: rgba(86, 100, 86, .35)
+        showLocation: false
+        untilText: bis
+        noEventsForNextDaysText: keine Termine in den nächsten Tagen
+        showProgressBar: false
+        showDescription: true
+        noEventText: keine Termine heute
+        showFullDayProgress: true
+        disableCalEventLink: false
+        disableCalLocationLink: false
+        disableCalLink: false
+        showDate: false
+        sortByStartTime: true
+        cardHeight: 91%
+        refreshInterval: 60
+
+      #############
+      #   House   #
+      #############
+
+      - type: grid
+        columns: 2
+        square: false
+        view_layout:
+          grid-area: house
+        cards:
+          - type: 'custom:button-card'
+            template: custom_card_se7enair_washingmachine
+            entity: input_select.waschmaschinenstatus
+            variables:
+              ulm_card_generic_swap_name: Waschmaschine
+          - type: custom:button-card
+            template: custom_card_se7enair_washingmachine
+            entity: input_select.trocknerstatus
+            variables:
+              ulm_card_generic_swap_name: Trockner
+          - type: 'custom:button-card'
+            template: custom_card_se7enair_trash
+            entity: calendar.abfallkalender
+          - type: "custom:button-card"
+            template: card_cover
+            entity: cover.garage_tor
+            variables:
+              ulm_card_cover_enable_controls: false
+              ulm_card_cover_enable_slider: false
+              ulm_card_cover_name: Garage
+              ulm_card_cover_garage: true
+          - type: "custom:button-card"
+            entity: lock.nuki_haustuere_lock
+            template: "custom_card_eraycetinay_lock"
+            name: "Haustüre"
+            variables:
+              ulm_custom_card_eraycetinay_lock_tap_control: true
+              ulm_custom_card_eraycetinay_lock_battery_level: sensor.nuki_haustuere_battery
+              ulm_custom_card_eraycetinay_lock_door_open: binary_sensor.flur_haustuere_tuersensor_contact
+            triggers_update:
+              - "sensor.nuki_haustuere_battery"
+              - "binary_sensor.flur_haustuere_tuersensor_contact"
+          - type: 'custom:button-card'
+            template: card_generic_swap
+            entity: switch.nuki_opener_ring_suppression
+            variables:
+              ulm_card_generic_swap_name: Klingelunterdrückung
+          - type: "custom:button-card"
+            template:
+              - card_media_player
+            entity: media_player.wohnzimmer_alexa
+            variables:
+              ulm_card_media_player_enable_popup: true
+          - type: 'custom:button-card'
+            template: card_generic_swap
+            entity: sensor.maehroboter_status_lesbar
+            variables:
+              ulm_card_generic_swap_name: Mähroboter
+              ulm_card_generic_swap_icon: mdi:robot-mower
+          - type: "custom:button-card"
+            template: card_light
+            entity: light.aussen_licht
+            variables:
+              ulm_card_light_enable_slider: false
+              ulm_card_light_enable_color: true
+              ulm_card_light_force_background_color: false
+
+              
+      #############
+      #   Rooms   #
+      #############
+
+      - type: grid
+        columns: 2
+        styles:
+          card:
+            - height: 29em
+        view_layout:
+          grid-area: rooms
+        square: false
+        cards:
+          # Wohnzimmer
+          - type: 'custom:button-card' 
+            template:
+              - card_room
+              - red_on
+            name: Wohnzimmer
+            icon: mdi:sofa
+            entity: climate.wohnzimmer_heizung
+            tap_action: !include ../../popup/climate_wohnzimmer.yaml
+              # action: navigate
+              # navigation_path: /ui-lovelace-minimalist/wohnzimmer
+            variables:
+              entity_1:
+                entity_id: light.wohnzimmer_licht_gruppe
+                tap_action:
+                  action: toggle
+                templates:
+                  - yellow_on
+              entity_2: 
+                entity_id: media_player.wz_tv
+                templates:
+                  - yellow_on
+              entity_3:
+                entity_id: humidifier.wz_luftbefeuchter
+          # Esszimmer
+          - type: 'custom:button-card'
+            template:
+              - card_room
+            name: Esszimmer
+            icon: mdi:table-furniture
+            entity: climate.esszimmer_heizung
+            tap_action:
+              action: navigate
+              navigation_path: /ui-lovelace-minimalist/esszimmer
+            variables:
+              entity_1:
+                entity_id: light.esszimmer_licht
+                templates:
+                  - yellow_on
+                tap_action:
+                  action: toggle
+          # Küche
+          - type: 'custom:button-card'
+            template:
+              - card_room
+            name: Küche
+            icon: mdi:stove
+            tap_action:
+              action: navigate
+              navigation_path: /ui-lovelace-minimalist/kueche
+            variables:
+              label_use_temperature: false
+              entity_1:
+                entity_id: light.kueche_licht_gruppe
+                templates:
+                  - yellow_on
+                tap_action:
+                  action: toggle
+          # Bad
+          # - type: 'custom:button-card'
+          #   template:
+          #     - card_room
+          #   name: Bad
+          #   icon: mdi:bathtub
+          #   entity: climate.bad_heizung
+          #   tap_action:
+          #     action: navigate
+          #     navigation_path: /ui-lovelace-minimalist/bad
+          #   variables:
+          #     entity_1:
+          #       entity_id: binary_sensor.bad_fenster_links_contact
+          # Schlafzimmer
+          - type: 'custom:button-card'
+            template:
+              - card_room
+            name: Schlafzimmer
+            icon: mdi:bed
+            entity: climate.schlafzimmer_heizung
+            tap_action:
+              action: navigate
+              navigation_path: /ui-lovelace-minimalist/schlafzimmer
+            variables:
+              entity_1:
+                entity_id: light.schlafzimmer_licht
+                templates:
+                  - yellow_on
+                tap_action:
+                  action: toggle
+              entity_2: 
+                entity_id: switch.schlafzimmer_babyphone
+                templates:
+                  - yellow_on
+                tap_action:
+                  action: toggle
+          # Büro
+          # - type: 'custom:button-card'
+          #   template:
+          #     - card_room
+          #   name: Büro
+          #   icon: mdi:chair-rolling
+          #   entity: climate.buero_heizung
+          #   tap_action:
+          #     action: navigate
+          #     navigation_path: /ui-lovelace-minimalist/buero
+          #   variables:
+          #     entity_1:
+          #       entity_id: binary_sensor.buero_bewegungsmelder_occupancy
+          #       tap_action:
+          #         action: more-info
+          #       templates:
+          #         - yellow_on
+
+      ##############
+      #   Camera   #
+      ##############
+
+      - type: custom:button-card
+        view_layout:
+          grid-area: camera
+        styles:
+          card:
+            - height: 100%
+          custom_fields:
+            camera:
+              [top: 0%, left: 0%, width: 111%, position: absolute]
+        custom_fields:
+          camera:
+            card:
+              type: custom:frigate-card
+              cameras:
+                - live_provider: frigate-jsmpeg
+                  camera_entity: camera.garten_kamera_hof
+                  frigate:
+                    camera_name: hof
+              view:
+                default: live
+                update_seconds: 300
+                timeout_seconds: 300
+                update_force: false
+              menu:
+                buttons:
+                  clips:
+                    enabled: true
+                  image:
+                    enabled: false
+                  download:
+                    enabled: false
+                  snapshots:
+                    enabled: false
+                  frigate_ui:
+                    enabled: false
+                  media_player:
+                    enabled: false
+                style: overlay
+                position: top
+              live:
+                preload: true
+                draggable: false
+                actions:
+                  tap_action:
+                    action: custom:frigate-card-action
+                    frigate_card_action: fullscreen
+                controls:
+                  next_previous:
+                    style: icons
+              image:
+                mode: camera

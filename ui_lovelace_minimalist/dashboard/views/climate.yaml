@@ -1,0 +1,297 @@
+---
+button_card_templates: !include_dir_merge_named "../../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+
+kiosk_mode:
+  hide_header: true
+  hide_sidebar: true
+  mobile_settings:
+    hide_sidebar: false
+    ignore_entity_settings: true
+    custom_width: 768
+
+title: "Climate"
+theme: "minimalist-desktop"
+# views: !include_dir_merge_list "views/"
+views:
+  - title: "Climate"
+    path: 0
+    icon: "mdi:home-thermometer"
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 3em repeat(5, 30%) 0.5em
+      grid-template-rows: 1em 
+      grid-gap: 0.7em
+      grid-template-areas: |
+        ". . . . ."
+        "back esszimmer wohnzimmer bad ."
+        ". schlafzimmer buero kind1 ."
+        "- holzkeller wohnkeller waschkueche ."
+        ". . . . ."
+
+    cards:
+      - type: custom:button-card
+        view_layout:
+          grid-area: back
+        template: chip_back
+        variables:
+          ulm_chip_back_path: /ui-lovelace-minimalist/
+    # Esszimmer
+      - type: vertical-stack
+        view_layout:
+          grid-area: esszimmer
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Esszimmer
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.esszimmer_temperatursensor_temperature
+                variables:
+                  ulm_card_graph_color: "var(--google-red)"
+                  ulm_card_graph_name: Temperatur
+                  ulm_card_graph_entity: sensor.esszimmer_temperatursensor_temperature
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.esszimmer_temperatursensor_humidity
+                variables:
+                  ulm_card_graph_color: "var(--google-blue)"
+                  ulm_card_graph_name: Luftfeuchtigkeit
+                  ulm_card_graph_entity: sensor.esszimmer_temperatursensor_humidity
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+          - type: "custom:button-card"
+            template: card_thermostat
+            entity: climate.esszimmer_heizung
+            variables:
+              ulm_card_thermostat_enable_collapse: false
+              ulm_card_thermostat_enable_controls: true
+              ulm_card_thermostat_enable_hvac_modes: true
+              ulm_card_thermostat_enable_popup: true
+
+    # Wohnzimmer
+      - type: vertical-stack
+        view_layout:
+          grid-area: wohnzimmer
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Wohnzimmer
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.wohnzimmer_temperatursensor_temperature
+                variables:
+                  ulm_card_graph_color: "var(--google-red)"
+                  ulm_card_graph_name: Temperatur
+                  ulm_card_graph_entity: sensor.wohnzimmer_temperatursensor_temperature
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.wohnzimmer_temperatursensor_humidity
+                variables:
+                  ulm_card_graph_color: "var(--google-blue)"
+                  ulm_card_graph_name: Luftfeuchtigkeit
+                  ulm_card_graph_entity: sensor.wohnzimmer_temperatursensor_humidity
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+          - type: "custom:button-card"
+            template: card_thermostat
+            entity: climate.wohnzimmer_heizung
+            variables:
+              ulm_card_thermostat_enable_collapse: false
+              ulm_card_thermostat_enable_controls: true
+              ulm_card_thermostat_enable_hvac_modes: true
+              ulm_card_thermostat_enable_popup: true
+          - type: custom:button-card
+            template: custom_card_saxel_fan_blue
+            entity: humidifier.wz_luftbefeuchter
+            name: Luftbefeuchter
+            variables:
+              collapsible: false
+              oscillate_attribute: oscillate
+    # Bad
+      - type: vertical-stack
+        view_layout:
+          grid-area: bad
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Bad
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.bad_temperatursensor_temperature
+                variables:
+                  ulm_card_graph_color: "var(--google-red)"
+                  ulm_card_graph_name: Temperatur
+                  ulm_card_graph_entity: sensor.bad_temperatursensor_temperature
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.bad_temperatursensor_humidity
+                variables:
+                  ulm_card_graph_color: "var(--google-blue)"
+                  ulm_card_graph_name: Luftfeuchtigkeit
+                  ulm_card_graph_entity: sensor.bad_temperatursensor_humidity
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+          - type: "custom:button-card"
+            template: card_thermostat
+            entity: climate.bad_heizung
+            variables:
+              ulm_card_thermostat_enable_collapse: false
+              ulm_card_thermostat_enable_controls: true
+              ulm_card_thermostat_enable_hvac_modes: true
+              ulm_card_thermostat_enable_popup: true
+    # Schlafzimmer
+      - type: vertical-stack
+        view_layout:
+          grid-area: schlafzimmer
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Schlafzimmer
+          - type: "custom:button-card"
+            template: card_thermostat
+            entity: climate.schlafzimmer_heizung
+            variables:
+              ulm_card_thermostat_enable_collapse: false
+              ulm_card_thermostat_enable_controls: true
+              ulm_card_thermostat_enable_hvac_modes: true
+              ulm_card_thermostat_enable_popup: true
+    # Buero
+      - type: vertical-stack
+        view_layout:
+          grid-area: buero
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Büro
+          - type: "custom:button-card"
+            template: card_thermostat
+            entity: climate.buero_heizung
+            variables:
+              ulm_card_thermostat_enable_collapse: false
+              ulm_card_thermostat_enable_controls: true
+              ulm_card_thermostat_enable_hvac_modes: true
+              ulm_card_thermostat_enable_popup: true
+    # Kind1
+      - type: vertical-stack
+        view_layout:
+          grid-area: kind1
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Kind1
+          - type: "custom:button-card"
+            template: card_thermostat
+            entity: climate.kind1_heizung
+            variables:
+              ulm_card_thermostat_enable_collapse: false
+              ulm_card_thermostat_enable_controls: true
+              ulm_card_thermostat_enable_hvac_modes: true
+              ulm_card_thermostat_enable_popup: true
+    # Holzkeller
+      - type: vertical-stack
+        view_layout:
+          grid-area: holzkeller
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Holzkeller
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.holzkeller_temperatursensor_temperature
+                variables:
+                  ulm_card_graph_color: "var(--google-red)"
+                  ulm_card_graph_name: Temperatur
+                  ulm_card_graph_entity: sensor.holzkeller_temperatursensor_temperature
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.holzkeller_temperatursensor_humidity
+                variables:
+                  ulm_card_graph_color: "var(--google-blue)"
+                  ulm_card_graph_name: Luftfeuchtigkeit
+                  ulm_card_graph_entity: sensor.holzkeller_temperatursensor_humidity
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+    # Wohnkeller
+      - type: vertical-stack
+        view_layout:
+          grid-area: wohnkeller
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Wohnkeller
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.wohnkeller_temperatursensor_temperature
+                variables:
+                  ulm_card_graph_color: "var(--google-red)"
+                  ulm_card_graph_name: Temperatur
+                  ulm_card_graph_entity: sensor.wohnkeller_temperatursensor_temperature
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.wohnkeller_temperatursensor_humidity
+                variables:
+                  ulm_card_graph_color: "var(--google-blue)"
+                  ulm_card_graph_name: Luftfeuchtigkeit
+                  ulm_card_graph_entity: sensor.wohnkeller_temperatursensor_humidity
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+    # Waschküche
+      - type: vertical-stack
+        view_layout:
+          grid-area: waschkueche
+        cards:
+          - type: 'custom:button-card'
+            template: card_title
+            name: Waschküche
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.waschkueche_temperatursensor_temperature
+                variables:
+                  ulm_card_graph_color: "var(--google-red)"
+                  ulm_card_graph_name: Temperatur
+                  ulm_card_graph_entity: sensor.waschkueche_temperatursensor_temperature
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
+              - type: 'custom:button-card'
+                template: card_graph
+                entity: sensor.waschkueche_temperatursensor_humidity
+                variables:
+                  ulm_card_graph_color: "var(--google-blue)"
+                  ulm_card_graph_name: Luftfeuchtigkeit
+                  ulm_card_graph_entity: sensor.waschkueche_temperatursensor_humidity
+                  ulm_card_graph_type: fill
+                  ulm_card_graph_hours: 24
+                  ulm_card_graph_group_by: interval
