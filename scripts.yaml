@@ -1,0 +1,316 @@
+popup_wifi:
+  alias: popup_wifi
+  sequence:
+  - service: browser_mod.popup
+    data:
+      card_mod:
+        style:
+          ha-dialog$: |
+            div.mdc-dialog__scrim {
+              backdrop-filter: blur(15px) !important;
+              -webkit-backdrop-filter: blur(50px) !important;
+              background-color: rgba(0,0,0,0.2) !important;
+            }
+      title: Gäste Wifi
+      content:
+        type: picture
+        image: /local/wifi.png
+popup_light:
+  alias: popup_light
+  sequence:
+  - service: browser_mod.popup
+    data:
+      card_mod:
+        style:
+          ha-dialog$: |
+            div.mdc-dialog__scrim {
+              backdrop-filter: blur(15px) !important;
+              -webkit-backdrop-filter: blur(50px) !important;
+              background-color: rgba(0,0,0,0.2) !important;
+            }
+      style: >
+        --popup-max-width: 1000px;
+      title: Lichter
+      content:
+        type: vertical-stack
+        cards:
+        # On
+          - type: vertical-stack
+            view_layout:
+              grid-area: ein
+            cards:
+              - type: 'custom:button-card'
+                template: card_title
+                name: Eingeschaltete Lichter
+              - type: custom:auto-entities
+                card:
+                  type: grid
+                  square: false
+                  columns: 3
+                card_param: cards
+                filter:
+                  include:
+                    - domain: light
+                      state: "on"
+                      options:
+                        type: 'custom:button-card'
+                        template: card_light
+                        variables:
+                          ulm_card_light_enable_slider: false
+                          ulm_card_light_enable_color: false
+                  exclude:
+                    - entity_id: "*dashboard*"
+                    - entity_id: "*laptop*"
+                sort: 
+                  method: entity_id
+        # Off
+          - type: vertical-stack
+            view_layout:
+              grid-area: aus
+            cards:
+              - type: 'custom:button-card'
+                template: card_title
+                name: Alle Lichter
+              - type: custom:auto-entities
+                card:
+                  type: grid
+                  square: false
+                  columns: 3
+                card_param: cards
+                filter:
+                  include:
+                    - domain: light
+                      state: "off"
+                      options:
+                        type: 'custom:button-card'
+                        template: card_light
+                        variables:
+                          ulm_card_light_enable_slider: false
+                          ulm_card_light_enable_color: false
+                  exclude:
+                    - entity_id: "*dashboard*"
+                sort: 
+                  method: entity_id
+popup_battery:
+  sequence:
+    - service: browser_mod.popup
+      data:
+        card_mod:
+          style:
+            ha-dialog$: |
+              div.mdc-dialog__scrim {
+                backdrop-filter: blur(15px) !important;
+                -webkit-backdrop-filter: blur(50px) !important;
+                background-color: rgba(0,0,0,0.2) !important;
+              }
+        title: Batterien
+        content:
+          type: "custom:battery-state-card"
+          card_mod:
+            class: add-header
+          # collapse: 10
+          color_gradient:
+            - "#ff0000"
+            - "#ffff00"
+            - "#00ff00"
+          filter:
+            include: # filters for auto-adding
+              - name: entity_id 
+                value: "sensor.*_batterie"
+              - name: entity_id 
+                value: "sensor.*_battery"
+          sort_by_level: asc
+
+
+popup_house:
+  alias: popup_house
+  sequence:
+  - service: browser_mod.popup
+    data:
+      card_mod:
+        style:
+          ha-dialog$: |
+            div.mdc-dialog__scrim {
+              backdrop-filter: blur(15px) !important;
+              -webkit-backdrop-filter: blur(50px) !important;
+              background-color: rgba(0,0,0,0.2) !important;
+            }
+      title: Haus
+      content:
+        type: horizontal-stack
+        cards:
+          - type: entities
+            title: Haus
+            show_header_toggle: false
+            entities:
+              - type: custom:hui-element
+                card_type: glance
+                entities:
+                  - entity: person.christoph
+                  - entity: person.franziska
+              - entity: group.haus
+              - entity: input_boolean.absent_long
+              - entity: binary_sensor.flur_rauchmelder_eg_alarm
+                name: Schlafzimmer Rauchmelder
+              - entity: binary_sensor.flur_rauchmelder_dg_alarm
+                name: DG/Flur Rauchmelder
+              - entity: binary_sensor.schlafzimmer_rauchmelder_alarm
+                name: EG/Flur Rauchmelder
+          - type: entities
+            title: Heizung
+            entities:
+              - entity: input_boolean.heizung
+              - entity: input_boolean.unplanmaessig_zuhause
+              - entity: group.ferien_und_feiertage
+                name: Ferien, Feiertage, Homeoffice
+              - entity: input_boolean.homeoffice
+              - entity: input_boolean.partymodus
+              - entity: sensor.openweathermap_temperature
+                name: Außentemperatur
+              - entity: schedy_room.schedy_heating_schlafzimmer
+                icon: mdi:thermometer-lines
+                name: Schlafzimmer
+              - entity: schedy_room.schedy_heating_wohnesszimmer
+                icon: mdi:thermometer-lines
+                name: Wohn und Esszimmer
+              - entity: schedy_room.schedy_heating_buero
+                icon: mdi:thermometer-lines
+                name: Büro
+              - entity: schedy_room.schedy_heating_bad
+                icon: mdi:thermometer-lines
+                name: Bad
+            show_header_toggle: false
+popup_motion:
+  alias: popup_motion
+  sequence:
+  - service: browser_mod.popup
+    data:
+      card_mod:
+        style:
+          ha-dialog$: |
+            div.mdc-dialog__scrim {
+              backdrop-filter: blur(15px) !important;
+              -webkit-backdrop-filter: blur(50px) !important;
+              background-color: rgba(0,0,0,0.2) !important;
+            }
+      style: >
+        --popup-max-width: 1000px;
+      title: Bewegung
+      content:
+        type: vertical-stack
+        cards:
+          - type: vertical-stack
+            view_layout:
+              grid-area: flur_dg
+            cards:
+              - type: 'custom:button-card'
+                template: card_title
+                name: Flur DG
+              - type: custom:auto-entities
+                card:
+                  type: grid
+                  square: false
+                  columns: 4
+                card_param: cards
+                filter:
+                  include:
+                    - entity_id: binary_sensor.flur_bewegungsmelder_treppe_occupancy
+                      options:
+                        type: 'custom:button-card'
+                        template: card_binary_sensor
+                        variables:
+                          ulm_card_binary_sensor_alert: true
+                          ulm_show_last_changed: true
+                    - entity_id: binary_sensor.*_dg_*occupancy
+                      options:
+                        type: 'custom:button-card'
+                        template: card_binary_sensor
+                        variables:
+                          ulm_card_binary_sensor_alert: true
+                          ulm_show_last_changed: true
+        # Flur EG
+          - type: vertical-stack
+            view_layout:
+              grid-area: flur_eg
+            cards:
+              - type: 'custom:button-card'
+                template: card_title
+                name: Flur EG
+              - type: custom:auto-entities
+                card:
+                  type: grid
+                  square: false
+                  columns: 4
+                card_param: cards
+                filter:
+                  include:
+                    - entity_id: binary_sensor.flur_bewegungsmelder_windfang_occupancy
+                      options:
+                        type: 'custom:button-card'
+                        template: card_binary_sensor
+                        variables:
+                          ulm_card_binary_sensor_alert: true
+                          ulm_show_last_changed: true
+                          ulm_card_binary_sensor_name: Windfang
+                    - entity_id: binary_sensor.*_eg_*occupancy
+                      area: Flur
+                      options:
+                        type: 'custom:button-card'
+                        template: card_binary_sensor_alert
+                        variables:
+                          ulm_card_binary_sensor_alert: true
+                          ulm_show_last_changed: true
+        # Flur UG
+          - type: vertical-stack
+            view_layout:
+              grid-area: flur_ug
+            cards:
+              - type: 'custom:button-card'
+                template: card_title
+                name: Flur UG
+              - type: custom:auto-entities
+                card:
+                  type: grid
+                  square: false
+                  columns: 4
+                card_param: cards
+                filter:
+                  include:
+                    - entity_id: binary_sensor.*_ug_*occupancy
+                      area: Flur
+                      options:
+                        type: 'custom:button-card'
+                        template: card_binary_sensor
+                        variables:
+                          ulm_card_binary_sensor_alert: true
+                          ulm_show_last_changed: true
+        # Aussen
+          - type: vertical-stack
+            view_layout:
+              grid-area: aussen
+            cards:
+              - type: 'custom:button-card'
+                template: card_title
+                name: Aussen
+              - type: custom:auto-entities
+                card:
+                  type: grid
+                  square: false
+                  columns: 4
+                card_param: cards
+                filter:
+                  include:
+                    - entity_id: binary_sensor.aussen_*occupancy
+                      options:
+                        type: 'custom:button-card'
+                        template: card_binary_sensor
+                        variables:
+                          ulm_card_binary_sensor_alert: true
+                          ulm_show_last_changed: true
+                    - entity_id: binary_sensor.garage_*occupancy
+                      options:
+                        type: 'custom:button-card'
+                        template: card_binary_sensor
+                        variables:
+                          ulm_card_binary_sensor_alert: true
+                          ulm_show_last_changed: true
