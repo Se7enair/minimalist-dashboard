@@ -30,7 +30,7 @@ custom_card_se7enair_washingmachine:
                 action: call-service
                 service: input_select.select_option
                 service_data:
-                  entity_id: input_select.waschmaschinenstatus
+                  entity_id: "[[[ return entity.entity_id ]]]"
                   option: Idle
               entity: "[[[ return entity.entity_id ]]]"
               icon: "[[[ return variables.ulm_card_generic_swap_icon; ]]]"
