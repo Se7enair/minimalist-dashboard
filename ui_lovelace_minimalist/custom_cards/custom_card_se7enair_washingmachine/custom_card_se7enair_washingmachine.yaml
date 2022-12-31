@@ -19,13 +19,21 @@ custom_card_se7enair_washingmachine:
               state:
                 - value: "Läuft"
                   styles:
-                    card: [background-color: "rgba(255, 255, 255, 0.8)"]
+                    card: [background-color: "rgba(245, 200, 110, 0.8)"]
+                    icon: 
+                      - color: white
+                      - animation: blink 3s ease infinite
                 - value: "Finishing"
                   styles:
                     card: [background-color: "rgba(229, 154, 24, 0.8)"]
                 - value: "Fertig"
+                  icon: mdi:alert
                   styles:
-                    card: [background-color: "rgba(0, 136, 0, 0.7)"]
+                    icon:
+                      - color: white
+                    card: 
+                      - background-color: "rgba(0, 136, 0, 0.7)"
+                      - animation: blink 3s ease infinite
               tap_action:
                 action: call-service
                 service: input_select.select_option

@@ -27,6 +27,18 @@ views:
         ". navigation welcome weather camera ."
         ". navigation calendar rooms house ."
         ". . footer footer footer ."
+      mediaquery:
+        #phone
+        "(max-width: 800px)":
+          grid-template-columns: 100%
+          grid-template-rows: 1.5em 
+          grid-gap: 0.7em
+          grid-template-areas: |
+            "back"
+            "welcome"
+            "rooms"
+            "house"
+
 
     cards:
 
@@ -207,13 +219,13 @@ views:
         disableCalLink: false
         showDate: false
         sortByStartTime: true
-        cardHeight: 91%
+        cardHeight: 100%
         refreshInterval: 60
 
       #############
       #   House   #
       #############
-
+                
       - type: grid
         columns: 2
         square: false
@@ -257,12 +269,11 @@ views:
             entity: switch.nuki_opener_ring_suppression
             variables:
               ulm_card_generic_swap_name: Klingelunterdrückung
-          - type: "custom:button-card"
-            template:
-              - card_media_player
-            entity: media_player.wohnzimmer_alexa
+          - type: 'custom:button-card'
+            template: card_generic_swap
+            entity: sensor.makitaladegeraet_status
             variables:
-              ulm_card_media_player_enable_popup: true
+              ulm_card_generic_swap_name: Makita Ladegerät
           - type: 'custom:button-card'
             template: card_generic_swap
             entity: sensor.maehroboter_status_lesbar
@@ -272,11 +283,18 @@ views:
           - type: "custom:button-card"
             template: card_light
             entity: light.aussen_licht
+            name: Aussenlicht
             variables:
               ulm_card_light_enable_slider: false
               ulm_card_light_enable_color: true
               ulm_card_light_force_background_color: false
-
+          - type: "custom:button-card"
+            template: card_generic_swap
+            entity: switch.heizung_zirkulationspumpe
+            variables:
+              ulm_card_generic_swap_name: Zirkulationspumpe
+              ulm_card_generic_swap_icon: mdi:pump
+ 
               
       #############
       #   Rooms   #
@@ -299,7 +317,7 @@ views:
             name: Wohnzimmer
             icon: mdi:sofa
             entity: climate.wohnzimmer_heizung
-            tap_action: !include ../../popup/climate_wohnzimmer.yaml
+            # tap_action: !include ../../popup/climate_wohnzimmer.yaml
               # action: navigate
               # navigation_path: /ui-lovelace-minimalist/wohnzimmer
             variables:
@@ -314,7 +332,7 @@ views:
                 templates:
                   - yellow_on
               entity_3:
-                entity_id: humidifier.wz_luftbefeuchter
+                entity_id: light.wz_licht_weihnachtsbaum
           # Esszimmer
           - type: 'custom:button-card'
             template:
@@ -458,3 +476,4 @@ views:
                     style: icons
               image:
                 mode: camera
+ 

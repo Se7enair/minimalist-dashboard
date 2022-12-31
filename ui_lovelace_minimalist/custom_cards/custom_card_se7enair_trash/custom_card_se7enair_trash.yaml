@@ -11,6 +11,44 @@ custom_card_se7enair_trash:
   custom_fields:
     item1:
       card:
+        extra_styles: |
+          @-webkit-keyframes pulsate-fwd {
+            0% {
+              -webkit-transform: scale(1);
+                      transform: scale(1);
+            }
+            50% {
+              -webkit-transform: scale(1.1);
+                      transform: scale(1.1);
+            }
+            100% {
+              -webkit-transform: scale(1);
+                      transform: scale(1);
+            }
+          }
+          @keyframes pulsate-fwd {
+            0% {
+              -webkit-transform: scale(1);
+                      transform: scale(1);
+            }
+            50% {
+              -webkit-transform: scale(1.1);
+                      transform: scale(1.1);
+            }
+            100% {
+              -webkit-transform: scale(1);
+                      transform: scale(1);
+            }
+          }
+        styles:
+          card:
+            - animation: >
+                [[[
+                  if (((states[entity.entity_id].attributes.message == 'Biotonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Altpapier')) && ((states['sensor.abfall_morgen'].state == 'Morgen') || (states['sensor.abfall_morgen'].state == 'Heute')))
+                    return 'pulsate-fwd 1s ease-in-out infinite';
+                  else
+                    return '';
+                ]]]
         type: "custom:button-card"
         custom_fields:
           item1:
@@ -27,11 +65,27 @@ custom_card_se7enair_trash:
                       - color: "rgba(186, 146, 0, 1)"
                     img_cell:
                       - background-color: "rgba(186, 146, 0, 0.2)"
+                    # card:
+                    #   - animation: >
+                    #       [[[
+                    #         if (((states[entity.entity_id].attributes.message == 'Biotonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Altpapier')) && ((states['sensor.abfall_morgen'].state == 'Morgen') || (states['sensor.abfall_morgen'].state == 'Heute')))
+                    #           return 'blink 3s ease infinite';
+                    #         else
+                    #           return '';
+                    #       ]]]
                 - operator: "template"
                   value: |
                     [[[ return states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen'; ]]]
                   icon: mdi:delete
                   styles:
+                    # card:
+                      # - animation: >
+                      #     [[[
+                      #       if (((states[entity.entity_id].attributes.message == 'Biotonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Altpapier')) && ((states['sensor.abfall_morgen'].state == 'Morgen') || (states['sensor.abfall_morgen'].state == 'Heute')))
+                      #         return 'blink 3s ease infinite';
+                      #       else
+                      #         return '';
+                      #     ]]]
                     icon:
                       - color: "rgba(160, 160, 160, 1)"
                     img_cell:
@@ -45,7 +99,14 @@ custom_card_se7enair_trash:
                       - color: "rgba(0, 100, 200, 1)"
                     img_cell:
                       - background-color: "rgba(0, 100, 200, 0.2)"
-              # icon: "[[[ return variables.ulm_card_generic_swap_icon; ]]]"
+                    # card:
+                    #   - animation: >
+                    #       [[[
+                    #         if (((states[entity.entity_id].attributes.message == 'Biotonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Altpapier')) && ((states['sensor.abfall_morgen'].state == 'Morgen') || (states['sensor.abfall_morgen'].state == 'Heute')))
+                    #           return 'blink 3s ease infinite';
+                    #         else
+                    #           return '';
+                    #       ]]]
               styles:
                 icon:
                   - color: "rgba(var(--color-theme),0.3)"
@@ -57,9 +118,10 @@ custom_card_se7enair_trash:
                 name:
                   - color: >
                       [[[
-                        return ((states[entity.entity_id].attributes.message == 'Biotonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Altpapier')) && ((states['sensor.abfall_morgen'].state == 'Morgen') || (states['sensor.abfall_morgen'].state == 'Heute')) ?
-                          'rgba(33, 33, 33, 1.0)' :
-                          'rgba(33, 33, 33, 0.4)';
+                        if (((states[entity.entity_id].attributes.message == 'Biotonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Restmülltonne in Memmingen') || (states[entity.entity_id].attributes.message == 'Altpapier')) && ((states['sensor.abfall_morgen'].state == 'Morgen') || (states['sensor.abfall_morgen'].state == 'Heute')))
+                          return 'rgba(33, 33, 33, 1.0)';
+                        else
+                          return 'rgba(33, 33, 33, 0.4)';
                       ]]]
               label: >
                 [[[ 

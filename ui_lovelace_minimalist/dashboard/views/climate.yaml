@@ -5,9 +5,10 @@ kiosk_mode:
   hide_header: true
   hide_sidebar: true
   mobile_settings:
-    hide_sidebar: false
+    hide_sidebar: true
+    hide_header: true
     ignore_entity_settings: true
-    custom_width: 768
+    custom_width: 800
 
 title: "Climate"
 theme: "minimalist-desktop"
@@ -18,6 +19,7 @@ views:
     icon: "mdi:home-thermometer"
     type: custom:grid-layout
     layout:
+      #default
       grid-template-columns: 3em repeat(5, 30%) 0.5em
       grid-template-rows: 1em 
       grid-gap: 0.7em
@@ -27,6 +29,23 @@ views:
         ". schlafzimmer buero kind1 ."
         "- holzkeller wohnkeller waschkueche ."
         ". . . . ."
+      mediaquery:
+        #phone
+        "(max-width: 800px)":
+          grid-template-columns: 100%
+          grid-template-rows: 1.5em 
+          grid-gap: 0.7em
+          grid-template-areas: |
+            "back"
+            "esszimmer"
+            "wohnzimmer"
+            "bad"
+            "schlafzimmer"
+            "buero"
+            "kind1"
+            "holzkeller"
+            "wohnkeller"
+            "waschkueche"
 
     cards:
       - type: custom:button-card
@@ -113,12 +132,11 @@ views:
               ulm_card_thermostat_enable_hvac_modes: true
               ulm_card_thermostat_enable_popup: true
           - type: custom:button-card
-            template: custom_card_saxel_fan_blue
+            template: card_generic_swap
             entity: humidifier.wz_luftbefeuchter
-            name: Luftbefeuchter
             variables:
-              collapsible: false
-              oscillate_attribute: oscillate
+              ulm_card_generic_swap_name: Luftbefeuchter
+              ulm_card_generic_swap_icon: mdi:air-humidifier
     # Bad
       - type: vertical-stack
         view_layout:

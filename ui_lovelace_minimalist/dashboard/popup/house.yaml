@@ -64,7 +64,7 @@ browser_mod:
                 - entity: person.christoph
                 - entity: person.franziska
             - entity: group.haus
-            - entity: input_boolean.alarmsystem
+            - entity: input_boolean.alarmanlage
             - entity: input_boolean.absent_long
             - entity: binary_sensor.flur_rauchmelder_eg_alarm
               name: Schlafzimmer Rauchmelder
