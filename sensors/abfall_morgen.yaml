@@ -1,0 +1,17 @@
+- platform: template
+  sensors:
+    abfall_morgen:
+      friendly_name: abfall_morgen
+      value_template: >
+        {% set midnight = now().replace(hour=0, minute=0, second=0, microsecond=0).timestamp() %}
+        {% set event = state_attr('calendar.abfallkalender', 'start_time') | as_timestamp %}
+        {% set delta = ((event - midnight) // 86400) | int(0) %}
+        {% if delta == 0 %}
+          Heute
+        {% elif delta == 1 %}
+          Morgen
+        {% elif delta == 2 %}
+          Übermorgen
+        {% else %}
+          In {{ delta }} Tagen
+        {% endif %}
